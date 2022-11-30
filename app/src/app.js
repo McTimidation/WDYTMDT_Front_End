@@ -2,6 +2,7 @@ import Header from './header';
 import GetData from './generate';
 import { useState } from 'react';
 import { BigButton, GeneratedOuting } from './body';
+import { ideas } from './generate';
 
 
 function App() {
@@ -15,10 +16,10 @@ function App() {
             <BigButton 
             page={page} 
             setPage={setPage}
+            ideas={ideas}
             />
             <GeneratedOuting
             page={page} 
-            setPage={setPage}
             />
         </>
     )
