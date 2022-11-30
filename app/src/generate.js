@@ -54,3 +54,4 @@ function GetYelpData() {
 
 }
 
+export default GetYelpData;

@@ -1,5 +1,5 @@
 import Header from './header';
-import GetData from './generate';
+import GetYelpData from './generate';
 import { useState, useEffect } from 'react';
 import { BigButton, GeneratedOuting } from './body';
 import axios from 'axios';
@@ -30,6 +30,10 @@ function App() {
 
 
     GetData();
+
+    GetYelpData();
+
+    
     return (
         <>
             <Header />
