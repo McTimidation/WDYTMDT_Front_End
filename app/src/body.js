@@ -1,4 +1,5 @@
 import Dropdown from 'react-bootstrap/Dropdown';
+import Form from 'react-bootstrap/Form'
 
 
 export function BigButton(props) {
@@ -8,16 +9,30 @@ export function BigButton(props) {
         <Dropdown.Item 
         eventKey={ item.id } 
         key={ item.id }
-        onClick={() => props.setValue( item.name )}>
+        onClick={() => 
+        props.setValue( item.name )}>
             { item.name }
         </Dropdown.Item>
     )
+    const onChange = (event) => {
+        props.setPrice(event.target.value)
+    }
+        
+
+    
     
     return (
         <>
+            <Form.Select onChange={onChange} aria-label="Default select example">
+                <option>What's your budget?</option>
+                <option value="1">$</option>
+                <option value="2">$$</option>
+                <option value="3">$$$</option>
+                <option value="4">$$$$</option>
+            </Form.Select>
             <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    Large button
+                    What type of Outing are you looking for?
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         { menuItems }
@@ -32,33 +47,20 @@ export function GeneratedOuting( { value, recommendations } ) {
     function random() {
         return Math.floor(Math.random() * (recommendations.length))
     }
-    const X = random();
-    console.log("recommendations", recommendations)
-    console.log("recommendations.business", recommendations.businesses)
-    const A = [1,2,3]
-    console.log(typeof A)
-    console.log(typeof recommendations)
-    console.log(typeof recommendations.businesses)
-    // console.log(recommendations.businesses[0])
-    console.log(recommendations.length)
-    // console.log(recommendations.businesses[X].name)
-    if (Array.isArray(recommendations.businesses)) {
-        console.log(recommendations.businesses["0"]);
-      } else {
-        console.log('arr is not an array');
-      }
+    // console.log(recommendations.length)
+    // setTimeout(console.log(recommendations[random()]), 5000)
+    // console.log(recommendations[random()])
 
-    // recommendations.businesses.map(item => {
-    //     console.log(item)
-    // })
+
 
     if (value) {
+        const X = random()
         return (
             <>
-                {/* <h2>Go Here</h2>
+                <h2>Go Here</h2>
                 <h3>{recommendations[X].name}</h3>
                 <h4>{recommendations[X].phone}</h4>
-                <img src={recommendations[X].picture}></img> */}
+                <img src={recommendations[X].picture}></img>
             </>
         )
     }

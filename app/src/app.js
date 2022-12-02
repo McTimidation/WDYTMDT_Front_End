@@ -1,5 +1,4 @@
 import Header from './header';
-import GetYelpData from './generate';
 import { useState, useEffect } from 'react';
 import { BigButton, GeneratedOuting } from './body';
 import axios from 'axios';
@@ -11,6 +10,7 @@ function App() {
     const [outing, setOuting] = useState([]);
     const [ value, setValue ] = useState();
     const [ recommendations, setRecommendations ] = useState([]);
+    const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
 
     function GetData() {
     const outingArray = []
@@ -28,14 +28,28 @@ function App() {
     }
     useEffect(() => {
     async function GetYelpData() {
-            
-                    const response = await axios.get('https://8000-mctimidation-wdytmdt-az9nokp6w27.ws-us77.gitpod.io/api/yelpView/?price=3&term=dinner')
-                    
-                    setRecommendations(response.data)
-            
+        const yelpArray = [];
+        const response = await axios.get(`https://8000-mctimidation-wdytmdt-az9nokp6w27.ws-us77.gitpod.io/api/yelpView/?price=${price}&term=${value}`)
+        response.data.businesses.forEach(biz => {
+            yelpArray.push({
+                            name: biz.name,
+                            phone: biz.display_phone,
+                            picture: biz.image_url,
+                            city: biz.location.city,
+                            state: biz.location.state,
+                            address: biz.location.address1
+                            })
+        })
+                    // if (Array.isArray(recommendations.businesses)) {
+                    //     console.log(recommendations.businesses["0"]);
+                    //   } else {
+                    //     console.log('arr is not an array');
+                    //   }
+        setRecommendations(yelpArray)
+        
         }
         GetYelpData();
-    },[])
+    },[price, value])
                 //     .then((resp) => {
                 //         resp.data.businesses.forEach(biz => {
                 //             yelpData.push({
@@ -69,7 +83,9 @@ function App() {
     return (
         <>
             <Header />
-            <BigButton 
+            <BigButton
+            price={price}
+            setPrice={setPrice}
             value={value}
             setValue={setValue}
             outing={outing}
