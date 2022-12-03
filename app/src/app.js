@@ -1,6 +1,5 @@
 import Header from './header';
-import GetData from './generate';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { BigButton, GeneratedOuting } from './body';
 import axios from 'axios';
 
@@ -8,42 +7,107 @@ import axios from 'axios';
 
 function App() {
     const [ page, setPage ] = useState()
-    const [outing, setOuting] = useState([]);
-    const [ value, setValue ] = useState();
+    const [ outings, setOutings ] = useState([]);
+    const [ value, setValue ] = useState('local');
+    const [ recommendations, setRecommendations ] = useState([]);
+    const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
+    const [ buttonState, setButtonState ] = useState('true');
+    const yelpRef = useRef([]);
 
-    function GetData() {
-    const outingArray = []
-
-        useEffect(() => {
-            axios.get('https://8000-mctimidation-wdytmdt-az9nokp6w27.ws-us77.gitpod.io/api/outings/?format=json')
+    
+    useEffect(() => {
+        function GetData() {
+        const outingArray = []
+            axios.get('https://8000-mctimidation-wdytmdt-qker2o8sc8p.ws-us77.gitpod.io/api/outings/?format=json')
             .then((resp) => {
                 resp.data.forEach(item => {
-                    console.log(item)
                     outingArray.push(item)
                 })
-                setOuting(outingArray)
-            
+                setOutings(outingArray)
             })
-        }, []);
-        console.log(outing)
-    }
+        }
+        GetData();
+    },[])
 
 
-    GetData();
+    useEffect(() => {
+        async function GetYelpData() {
+            yelpRef.current = [];
+            const response = await axios.get(`https://8000-mctimidation-wdytmdt-qker2o8sc8p.ws-us77.gitpod.io/api/yelpView/?price=${price}&term=${value}`)
+            response.data.businesses.forEach(biz => {
+                yelpRef.current.push({
+                            name: biz.name,
+                            phone: biz.display_phone,
+                            picture: biz.image_url,
+                            city: biz.location.city,
+                            state: biz.location.state,
+                            address: biz.location.address1
+                            })
+            })
+                    // if (Array.isArray(recommendations.businesses)) {
+                    //     console.log(recommendations.businesses["0"]);
+                    //   } else {
+                    //     console.log('arr is not an array');
+                    //   }
+            
+        
+        }
+        GetYelpData();
+        console.log(yelpRef.current)
+    },[price, value])
+                //     .then((resp) => {
+                //         resp.data.businesses.forEach(biz => {
+                //             yelpData.push({
+                //                             name: biz.name,
+                //                             phone: biz.display_phone,
+                //                             picture: biz.image_url,
+                //                             city: biz.location.city,
+                //                             state: biz.location.state,
+                //                             address: biz.location.address1
+    
+                //             })
+                //         })
+                //             // 
+                //         })
+                //         console.log(yelpData);
+                //         setRecommendations(yelpData);
+                //         console.log(recommendations)
+                //     }, []);
+                    
+                // } 
+                
+    
+            
+
+
+    
+
+    
+
+    
     return (
         <>
             <Header />
-            <BigButton 
+            <BigButton
+            setRecommendations={setRecommendations}
+            yelpRef={yelpRef}
+            buttonState={buttonState}
+            setButtonState={setButtonState}
+            price={price}
+            setPrice={setPrice}
             value={value}
             setValue={setValue}
-            outing={outing}
-            setOuting={setOuting}
+            outings={outings}
+            setOutings={setOutings}
             page={page} 
             setPage={setPage}
             />
-            {/* <GeneratedOuting
-            page={page} 
-            /> */}
+            <GeneratedOuting
+            yelpRef={yelpRef}
+            buttonState={buttonState}
+            recommendations={recommendations}
+            value={value} 
+            />
         </>
     )
 }
