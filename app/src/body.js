@@ -5,8 +5,8 @@ import Button from 'react-bootstrap/Button';
 
 
 export function BigButton(props) {
-    const tempValue = useRef(null);
-    const tempPrice = useRef(null);
+    const tempValue = useRef('local');
+    const tempPrice = useRef('1%2C2%2C3%2C4');
     
     // useEffect(() => {
     //     console.log('price: ', props.price)
@@ -17,8 +17,7 @@ export function BigButton(props) {
     const buttonClick = (e) => {
         props.setValue(tempValue.current)
         props.setPrice(tempPrice.current)
-        console.log(props.buttonState)
-        props.setButtonState(!props.buttonState)
+        props.setRecommendations(props.yelpRef.current)
     }
 
     const menuItems = props.outings.map((item) =>  
@@ -67,7 +66,7 @@ export function BigButton(props) {
     )
 }
 
-export function GeneratedOuting( { value, recommendations, buttonState } ) {
+export function GeneratedOuting( { value, recommendations } ) {
 
     function random() {
         return Math.floor(Math.random() * (recommendations.length))
@@ -76,17 +75,17 @@ export function GeneratedOuting( { value, recommendations, buttonState } ) {
     // setTimeout(console.log(recommendations[random()]), 5000)
     // console.log(recommendations[random()])
 
-            if (value != 'local' && recommendations.length > 0) {
+            if (value !== 'local' && recommendations.length > 0) {
                 const X = random()
                 return (
                     <>
                         <h2>Go Here</h2>
                         <h3>{recommendations[X].name}</h3>
                         <h4>{recommendations[X].phone}</h4>
-                        <img src={recommendations[X].picture}></img>
+                        <img src={recommendations[X].picture} alt="a restaurant"></img>
                     </>
                 )
-            } else if (value != 'local') {
+            } else if (value !== 'local') {
                 return (
                     <h2>No results matched those parameters. Try harder.</h2>
                 )

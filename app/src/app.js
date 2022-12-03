@@ -12,6 +12,7 @@ function App() {
     const [ recommendations, setRecommendations ] = useState([]);
     const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
     const [ buttonState, setButtonState ] = useState('true');
+    const yelpRef = useRef([]);
 
     
     useEffect(() => {
@@ -31,10 +32,10 @@ function App() {
 
     useEffect(() => {
         async function GetYelpData() {
-            const yelpArray = [];
+            yelpRef.current = [];
             const response = await axios.get(`https://8000-mctimidation-wdytmdt-qker2o8sc8p.ws-us77.gitpod.io/api/yelpView/?price=${price}&term=${value}`)
             response.data.businesses.forEach(biz => {
-                yelpArray.push({
+                yelpRef.current.push({
                             name: biz.name,
                             phone: biz.display_phone,
                             picture: biz.image_url,
@@ -48,12 +49,12 @@ function App() {
                     //   } else {
                     //     console.log('arr is not an array');
                     //   }
-            setRecommendations(yelpArray)
+            
         
         }
         GetYelpData();
-        
-    },[buttonState])
+        console.log(yelpRef.current)
+    },[price, value])
                 //     .then((resp) => {
                 //         resp.data.businesses.forEach(biz => {
                 //             yelpData.push({
@@ -88,6 +89,8 @@ function App() {
         <>
             <Header />
             <BigButton
+            setRecommendations={setRecommendations}
+            yelpRef={yelpRef}
             buttonState={buttonState}
             setButtonState={setButtonState}
             price={price}
@@ -100,6 +103,7 @@ function App() {
             setPage={setPage}
             />
             <GeneratedOuting
+            yelpRef={yelpRef}
             buttonState={buttonState}
             recommendations={recommendations}
             value={value} 
