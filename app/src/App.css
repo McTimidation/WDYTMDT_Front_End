@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
 
 
-#root {
+body {
     margin: auto !important;
     text-align: center;
     height:100vh;
@@ -28,3 +28,12 @@ span {
       font-size: 5vh !important;
     }
   }
+
+img {
+    width: 100px;
+    height: auto;
+}
+
+ul li {
+    list-style: none;
+}
