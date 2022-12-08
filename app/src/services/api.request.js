@@ -21,8 +21,8 @@ client.interceptors.response.use(
         }
 
         if (error.response.data.code === "token_not_valid" &&
-            error.response.status === 401 &&
-            error.response.statusText === "Unauthorized") {
+            error.response.status === 401
+        ) {
             const user = localStorage.getItem('user');
 
             if (user) {
@@ -55,6 +55,9 @@ client.interceptors.response.use(
                 console.log("Refresh token not available.")
                 window.location.href = '/login/';
             }
+        } else {
+            console.log("Something went horribly wrong!")
+            window.location.href = '/login/';
         }
 
 

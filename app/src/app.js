@@ -1,11 +1,13 @@
 import Header from './components/header';
 import { useState, useEffect, useRef } from 'react';
-import { BigButton, GeneratedOuting } from './components/body';
+import { BigButton } from './components/body';
 import axios from 'axios';
 import { GlobalProvider } from './context/GlobalState';
 import { Outlet } from "react-router-dom";
-import { API_URL, USER_RECS_ENDPOINT } from './services/auth.constants';
+import { API_URL, USER_RECS_ENDPOINT, ACTIVITY_ENDPOINT } from './services/auth.constants';
 import Layout from './components/layout';
+import request from './services/api.request';
+import { GeneratedOuting } from './components/generatedouting';
 
 
 
@@ -17,7 +19,7 @@ function App() {
     const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
     const [ buttonState, setButtonState ] = useState(0);
     const yelpRef = useRef([]);
-    const [recPostData, setRecPostData ] = useState()
+    const [recPostData, setRecPostData ] = useState(null)
         
     //                                             name: null,
     //                                             phone: null,
@@ -49,17 +51,16 @@ function App() {
             yelpRef.current = [];
             const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}`)
             response.data.businesses.forEach(biz => {
-                console.log(biz)
                 yelpRef.current.push({
-                            id: biz.id,
-                            name: biz.name,
-                            phone: biz.display_phone,
-                            rating: biz.rating,
-                            picture_url: biz.image_url,
-                            city: biz.location.city,
-                            state: biz.location.state,
-                            address: biz.location.address1
-                            })
+                    id: biz.id,
+                    name: biz.name,
+                    phone: biz.display_phone,
+                    rating: biz.rating,
+                    picture_url: biz.image_url,
+                    city: biz.location.city,
+                    state: biz.location.state,
+                    address: biz.location.address1
+                    })
             })
                     // if (Array.isArray(recommendations.businesses)) {
                     //     console.log(recommendations.businesses["0"]);
@@ -76,25 +77,26 @@ function App() {
 
     },[price, value])
 
-
-    function PostYelpData() {
-        axios.post(`${API_URL}${USER_RECS_ENDPOINT}`, {
-            name: recPostData.name,
-            phone: recPostData.phone,
-            picture_url: recPostData.picture_url,
-            rating: recPostData.rating,
-            city: recPostData.city,
-            state: recPostData.state,
-            address: recPostData.address
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
-    }
-
+    useEffect(() => {
+        async function PostYelpData() {
+            await request({
+                url: ACTIVITY_ENDPOINT,
+                method: 'POST',
+                data: {
+                    name: recPostData.name,
+                    phone: recPostData.phone.replace(/[^0-9]/g, ''),
+                    picture_url: recPostData.picture_url,
+                    rating: recPostData.rating,
+                    city: recPostData.city,
+                    state: recPostData.state,
+                    address: recPostData.address
+                }
+            })
+        }
+        if (recPostData !== null) {
+                PostYelpData();
+        }
+    }, [recPostData])
 
     
     return (
@@ -117,7 +119,6 @@ function App() {
             setPage={setPage}
             />
             <GeneratedOuting
-            PostYelpData={PostYelpData}
             setRecPostData={setRecPostData}
             recPostData={recPostData}
             yelpRef={yelpRef}

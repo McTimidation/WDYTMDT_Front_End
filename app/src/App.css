@@ -30,7 +30,8 @@ span {
   }
 
 img {
-    width: 100px;
+    min-width: 300px !important;
+    width: 40%;
     height: auto;
 }
 
