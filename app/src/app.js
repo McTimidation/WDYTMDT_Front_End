@@ -1,50 +1,133 @@
-import Header from './header';
-import GetData from './generate';
-import { useState, useEffect } from 'react';
-import { BigButton, GeneratedOuting } from './body';
+import Header from './components/header';
+import { useState, useEffect, useRef } from 'react';
+import { BigButton } from './components/body';
 import axios from 'axios';
+import { GlobalProvider } from './context/GlobalState';
+import { Outlet } from "react-router-dom";
+import { API_URL, USER_RECS_ENDPOINT, ACTIVITY_ENDPOINT } from './services/auth.constants';
+import Layout from './components/layout';
+import request from './services/api.request';
+import { GeneratedOuting } from './components/generatedouting';
 
 
 
 function App() {
     const [ page, setPage ] = useState()
-    const [outing, setOuting] = useState([]);
-    const [ value, setValue ] = useState();
+    const [ outings, setOutings ] = useState([]);
+    const [ value, setValue ] = useState('Dinner');
+    const [ recommendations, setRecommendations ] = useState([]);
+    const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
+    const [ buttonState, setButtonState ] = useState(0);
+    const yelpRef = useRef([]);
+    const [recPostData, setRecPostData ] = useState(null)
+        
+    //                                             name: null,
+    //                                             phone: null,
+    //                                             rating: null,
+    //                                             picture_url: null,
+    //                                             city: null,
+    //                                             state: null,
+    //                                             address: null
+    //                                         })
 
-    function GetData() {
-    const outingArray = []
-
-        useEffect(() => {
-            axios.get('https://8000-mctimidation-wdytmdt-az9nokp6w27.ws-us77.gitpod.io/api/outings/?format=json')
+    
+    useEffect(() => {
+        function GetData() {
+        const outingArray = []
+            axios.get(`${API_URL}outings/?format=json`)
             .then((resp) => {
                 resp.data.forEach(item => {
-                    console.log(item)
                     outingArray.push(item)
                 })
-                setOuting(outingArray)
-            
+                setOutings(outingArray)
             })
-        }, []);
-        console.log(outing)
-    }
+        }
+        GetData();
+    },[])
 
 
-    GetData();
+    useEffect(() => {
+        async function GetYelpData() {
+            yelpRef.current = [];
+            const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}`)
+            response.data.businesses.forEach(biz => {
+                yelpRef.current.push({
+                    id: biz.id,
+                    name: biz.name,
+                    phone: biz.display_phone,
+                    rating: biz.rating,
+                    picture_url: biz.image_url,
+                    city: biz.location.city,
+                    state: biz.location.state,
+                    address: biz.location.address1
+                    })
+            })
+                    // if (Array.isArray(recommendations.businesses)) {
+                    //     console.log(recommendations.businesses["0"]);
+                    //   } else {
+                    //     console.log('arr is not an array');
+                    //   }
+        }
+        GetYelpData();
+        function random() {
+            return Math.floor(Math.random() * (recommendations.length))
+        }
+        const X = random()
+        
+
+    },[price, value])
+
+    useEffect(() => {
+        async function PostYelpData() {
+            await request({
+                url: ACTIVITY_ENDPOINT,
+                method: 'POST',
+                data: {
+                    name: recPostData.name,
+                    phone: recPostData.phone.replace(/[^0-9]/g, ''),
+                    picture_url: recPostData.picture_url,
+                    rating: recPostData.rating,
+                    city: recPostData.city,
+                    state: recPostData.state,
+                    address: recPostData.address
+                }
+            })
+        }
+        if (recPostData !== null) {
+                PostYelpData();
+        }
+    }, [recPostData])
+
+    
     return (
-        <>
-            <Header />
-            <BigButton 
+        <Layout>
+            <BigButton
+            recPostData={recPostData}
+            setRecPostData={setRecPostData}
+            recommendations={recommendations}
+            setRecommendations={setRecommendations}
+            yelpRef={yelpRef}
+            buttonState={buttonState}
+            setButtonState={setButtonState}
+            price={price}
+            setPrice={setPrice}
             value={value}
             setValue={setValue}
-            outing={outing}
-            setOuting={setOuting}
+            outings={outings}
+            setOutings={setOutings}
             page={page} 
             setPage={setPage}
             />
-            {/* <GeneratedOuting
-            page={page} 
-            /> */}
-        </>
+            <GeneratedOuting
+            setRecPostData={setRecPostData}
+            recPostData={recPostData}
+            yelpRef={yelpRef}
+            buttonState={buttonState}
+            recommendations={recommendations}
+            value={value} 
+            />
+
+        </Layout>
     )
 }
 
