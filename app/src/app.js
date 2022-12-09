@@ -2,33 +2,36 @@ import Header from './components/header';
 import { useState, useEffect, useRef } from 'react';
 import { BigButton } from './components/body';
 import axios from 'axios';
-import { GlobalProvider } from './context/GlobalState';
+import { useGlobalState } from './context/GlobalState';
 import { Outlet } from "react-router-dom";
 import { API_URL, USER_RECS_ENDPOINT, ACTIVITY_ENDPOINT } from './services/auth.constants';
 import Layout from './components/layout';
 import request from './services/api.request';
 import { GeneratedOuting } from './components/generatedouting';
-
+import { ScheduleOuting } from './components/scheduleouting';
+import "react-datetime/css/react-datetime.css";
 
 
 function App() {
-    const [ page, setPage ] = useState()
+    const [state, dispatch] = useGlobalState();
+    const [ page, setPage ] = useState('generate')
     const [ outings, setOutings ] = useState([]);
     const [ value, setValue ] = useState('Dinner');
     const [ recommendations, setRecommendations ] = useState([]);
     const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
-    const [ buttonState, setButtonState ] = useState(0);
+    const [ buttonState, setButtonState ] = useState('inactive');
     const yelpRef = useRef([]);
-    const [recPostData, setRecPostData ] = useState(null)
-        
-    //                                             name: null,
-    //                                             phone: null,
-    //                                             rating: null,
-    //                                             picture_url: null,
-    //                                             city: null,
-    //                                             state: null,
-    //                                             address: null
-    //                                         })
+    const [recPostData, setRecPostData ] = useState({
+                                                user: state.currentUser.user_id,
+                                                name: null,
+                                                phone: null,
+                                                rating: null,
+                                                picture_url: null,
+                                                city: null,
+                                                state: null,
+                                                address: null,
+                                                scheduled_for:null
+                                            })
 
     
     useEffect(() => {
@@ -77,26 +80,24 @@ function App() {
 
     },[price, value])
 
-    useEffect(() => {
-        async function PostYelpData() {
-            await request({
-                url: ACTIVITY_ENDPOINT,
-                method: 'POST',
-                data: {
-                    name: recPostData.name,
-                    phone: recPostData.phone.replace(/[^0-9]/g, ''),
-                    picture_url: recPostData.picture_url,
-                    rating: recPostData.rating,
-                    city: recPostData.city,
-                    state: recPostData.state,
-                    address: recPostData.address
-                }
-            })
-        }
-        if (recPostData !== null) {
-                PostYelpData();
-        }
-    }, [recPostData])
+    
+    async function PostYelpData() {
+        await request({
+            url: ACTIVITY_ENDPOINT,
+            method: 'POST',
+            data: {
+                name: recPostData.name,
+                phone: recPostData.phone.replace(/[^0-9]/g, ''),
+                picture_url: recPostData.picture_url,
+                rating: recPostData.rating,
+                city: recPostData.city,
+                state: recPostData.state,
+                address: recPostData.address
+            }
+        })
+    }
+        
+    
 
     
     return (
@@ -119,13 +120,21 @@ function App() {
             setPage={setPage}
             />
             <GeneratedOuting
+            PostYelpData={PostYelpData}
+            page={page}
+            setPage={setPage}
+            buttonState={buttonState}
             setRecPostData={setRecPostData}
             recPostData={recPostData}
             yelpRef={yelpRef}
-            buttonState={buttonState}
+            setButtonState={setButtonState}
             recommendations={recommendations}
             value={value} 
             />
+                
+            
+            
+            
 
         </Layout>
     )

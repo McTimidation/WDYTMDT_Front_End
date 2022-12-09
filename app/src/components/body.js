@@ -11,21 +11,21 @@ export function BigButton(props) {
     const tempValue = useRef('local');
     const tempPrice = useRef('1%2C2%2C3%2C4');
 
-
+   
+    
 
     
     
 
     const generateButtonClick = (e) => {
         props.setRecommendations(props.yelpRef.current)
-        props.setButtonState('true')
-
-
-
-
-
-
+        props.setPage('carousel')
     }
+
+    useEffect(() => {
+        console.log(props.recommendations)
+        console.log(props.buttonState)
+    },[props.buttonState, props.recommendations])
 
     const menuItems = props.outings.map((item) =>
             <option 
@@ -37,22 +37,18 @@ export function BigButton(props) {
     )
     const onBudgetChange = (event) => {
         props.setPrice(event.target.value)
-        console.log(tempPrice.current)
     }
 
     const onOutingChange = (event) => {
         props.setValue(event.target.value)
-        console.log(tempValue.current)
-
     }
 
-    
 
-    
+    if (props.page === 'generate') {
     return (
         <>
             <h5>What's your budget?</h5>
-            <Col xs="auto">
+            <div id="priceSelect">
                 <Form.Select onChange={onBudgetChange} aria-label="Default select example">
                     <option value="1%2C2%2C3%2C4">Any</option>
                     <option value="1">$</option>
@@ -60,13 +56,13 @@ export function BigButton(props) {
                     <option value="3">$$$</option>
                     <option value="4">$$$$</option>
                 </Form.Select>
-                </Col>
+                </div>
             <h5>What kind of outing are you looking for?</h5>
-            <Col xs="auto">
+            <div id="outingSelect">
                 <Form.Select onChange={onOutingChange}>
                     { menuItems }
                 </Form.Select>
-            </Col>
+            </div>
             <div className="d-grid gap-2">
                 <a href="#imageCarousel">
                     <Button onClick={generateButtonClick} variant="secondary" size="lg">
@@ -77,6 +73,9 @@ export function BigButton(props) {
             {props.children}
         </>
     )
+    } else {
+        return null
+    }
 }
 
 // export function GeneratedOuting( { PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState } ) {
