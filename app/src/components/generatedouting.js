@@ -85,7 +85,7 @@ export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recP
                     frameBorder="0" style={{border:0}}
                     referrerPolicy="no-referrer-when-downgrade"
                     src={`https://www.google.com/maps/embed/v1/place
-                    ?key=AIzaSyCb-Z62_js4i0vHP1Jc1gIp9nL_AuyKAvM
+                    ?key=
                     &q=${recPostData.address}+${recPostData.city}+${recPostData.state}`}
                     allowFullScreen>
                 </iframe> */}
