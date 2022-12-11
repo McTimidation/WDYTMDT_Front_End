@@ -8,7 +8,7 @@ import moment from 'moment';
 
 
 
-export function GeneratedOuting({ page, setPage, PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState, setButtonState }) {
+export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState, setButtonState }) {
     const [ scheduledTime, setScheduledTime ] = useState(new Date());
 
     const onScheduleClick = (e) => {
@@ -36,7 +36,8 @@ export function GeneratedOuting({ page, setPage, PostYelpData, recPostData, setR
     const outingsList = recommendations.map((item) =>
         <Carousel.Item key={item.id} interval={20000}>
             <h3>{item.name}</h3>
-            <p>{item.phone}</p>
+            <p>{item.phone}<br></br>Rating: {item.rating}</p>
+
             <img
                 className="img-fluid carImages"
                 src={item.picture_url}
@@ -57,14 +58,19 @@ export function GeneratedOuting({ page, setPage, PostYelpData, recPostData, setR
 
     if (page === 'carousel') {
         return (
-            <Carousel variant='dark' id="imageCarousel">
+            <>
+            <Carousel  variant='dark' id="imageCarousel">
                 { outingsList }
             </Carousel>
+            <button ref={scrollToRef} onClick={() => {setPage('generate')}}>Go Back</button>
+            </>
+            
         );
     }
 
     else if (page === 'schedule') {
         return (
+            <>
             <div id="selectedContainer">
                 <h3>{recPostData.name}</h3>
                 <p>{recPostData.phone}</p>
@@ -73,8 +79,19 @@ export function GeneratedOuting({ page, setPage, PostYelpData, recPostData, setR
                 <button onClick={onScheduleClick} id="scheduleButton">
                     Schedule it!
                 </button>
-                
+                {/* <iframe
+                    width="450"
+                    height="250"
+                    frameBorder="0" style={{border:0}}
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps/embed/v1/place
+                    ?key=AIzaSyCb-Z62_js4i0vHP1Jc1gIp9nL_AuyKAvM
+                    &q=${recPostData.address}+${recPostData.city}+${recPostData.state}`}
+                    allowFullScreen>
+                </iframe> */}
             </div>
+            <button onClick={() => {setPage('carousel')}}>Go Back</button>
+            </>
         );
     } else if (page === 'alert') {
         console.log(scheduledTime)

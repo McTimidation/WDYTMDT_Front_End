@@ -10,16 +10,13 @@ import { API_URL, USER_RECS_ENDPOINT } from '../services/auth.constants';
 export function BigButton(props) {
     const tempValue = useRef('local');
     const tempPrice = useRef('1%2C2%2C3%2C4');
-
-   
     
 
-    
-    
 
     const generateButtonClick = (e) => {
         props.setRecommendations(props.yelpRef.current)
         props.setPage('carousel')
+        setTimeout(() => {props.scrollToRef.current.scrollIntoView({behavior:"smooth", block:"end"})},  20)
     }
 
 

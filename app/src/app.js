@@ -14,13 +14,14 @@ import "react-datetime/css/react-datetime.css";
 
 function App() {
     const [state, dispatch] = useGlobalState();
-    const [ page, setPage ] = useState('generate')
     const [ outings, setOutings ] = useState([]);
     const [ value, setValue ] = useState('Dinner');
     const [ recommendations, setRecommendations ] = useState([]);
     const [ price, setPrice ] = useState('1%2C2%2C3%2C4');
     const [ buttonState, setButtonState ] = useState('inactive');
     const yelpRef = useRef([]);
+    const [ page, setPage ] = useState('generate')
+    const scrollToRef = useRef();
     const [recPostData, setRecPostData ] = useState({
                                                 user: null,
                                                 name: null,
@@ -54,6 +55,7 @@ function App() {
             yelpRef.current = [];
             const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}`)
             response.data.businesses.forEach(biz => {
+                console.log(biz)
                 yelpRef.current.push({
                     id: biz.id,
                     name: biz.name,
@@ -62,7 +64,11 @@ function App() {
                     picture_url: biz.image_url,
                     city: biz.location.city,
                     state: biz.location.state,
-                    address: biz.location.address1
+                    address: biz.location.address1,
+                    coordinates: {
+                        lat: biz.coordinates.latitude,
+                        long: biz.coordinates.longitude
+                    }
                     })
             })
                     // if (Array.isArray(recommendations.businesses)) {
@@ -103,8 +109,12 @@ function App() {
 
     
     return (
-        <Layout>
+        <Layout
+        page={page}
+        setPage={setPage}
+        >
             <BigButton
+            scrollToRef={scrollToRef}
             recPostData={recPostData}
             setRecPostData={setRecPostData}
             recommendations={recommendations}
@@ -122,6 +132,7 @@ function App() {
             setPage={setPage}
             />
             <GeneratedOuting
+            scrollToRef={scrollToRef}
             PostYelpData={PostYelpData}
             page={page}
             setPage={setPage}
