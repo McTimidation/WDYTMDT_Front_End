@@ -22,7 +22,7 @@ function App() {
     const [ buttonState, setButtonState ] = useState('inactive');
     const yelpRef = useRef([]);
     const [recPostData, setRecPostData ] = useState({
-                                                user: state.currentUser.user_id,
+                                                user: null,
                                                 name: null,
                                                 phone: null,
                                                 rating: null,
@@ -86,13 +86,15 @@ function App() {
             url: ACTIVITY_ENDPOINT,
             method: 'POST',
             data: {
+                user: state.currentUser.user_id,
                 name: recPostData.name,
                 phone: recPostData.phone.replace(/[^0-9]/g, ''),
                 picture_url: recPostData.picture_url,
                 rating: recPostData.rating,
                 city: recPostData.city,
                 state: recPostData.state,
-                address: recPostData.address
+                address: recPostData.address,
+                scheduled_for: recPostData.scheduled_for
             }
         })
     }

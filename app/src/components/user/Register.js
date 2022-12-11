@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import AuthService from "../../services/auth.service";
+import Layout from "../layout";
+// import Header from "../components/header.js";
 
 const Register = () => {
     const [user, setUser] = useState({
@@ -22,6 +24,8 @@ const Register = () => {
     }
 
     return (
+        // <Header>
+        <Layout>
         <div className="c-form">
             <form onSubmit={handleRegister}>
                 <div>
@@ -67,6 +71,7 @@ const Register = () => {
                 />
             </form>
         </div>
+        </Layout>
     )
 
 }

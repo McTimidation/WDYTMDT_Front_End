@@ -2,6 +2,7 @@
 import Carousel from 'react-bootstrap/Carousel';
 import { ScheduleOuting } from './scheduleouting';
 import { useState } from 'react';
+import moment from 'moment';
 
 
 
@@ -11,16 +12,17 @@ export function GeneratedOuting({ page, setPage, PostYelpData, recPostData, setR
     const [ scheduledTime, setScheduledTime ] = useState(new Date());
 
     const onScheduleClick = (e) => {
+        setPage('alert')
         setRecPostData({...recPostData,
-                        scheduled_for: scheduledTime
+                        scheduled_for: moment(scheduledTime).format("YYYY-MM-DDThh:mm")
                         });
         PostYelpData()
+        setTimeout(() => {setPage('generate')}, 5000)
     }
-    console.log(recPostData)
+
 
     const onOptionClick = (e) => {
         let selected = recommendations.find(item => item.id === e.target.value)
-        console.log(selected.name)
         setRecPostData({...recPostData,
                         name: selected.name,
                         phone: selected.phone,
@@ -74,6 +76,14 @@ export function GeneratedOuting({ page, setPage, PostYelpData, recPostData, setR
                 
             </div>
         );
+    } else if (page === 'alert') {
+        console.log(scheduledTime)
+        const bookedTime = moment(scheduledTime).format("dddd MMM Do  @ h:mma")
+        return (
+            <div className="alert alert-dark" role="alert">
+                You scheduled <strong>{recPostData.name}</strong> for <em>{bookedTime}</em>!
+            </div>
+        )
     }
 }
 

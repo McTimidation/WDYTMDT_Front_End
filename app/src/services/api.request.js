@@ -57,7 +57,7 @@ client.interceptors.response.use(
             }
         } else {
             console.log("Something went horribly wrong!")
-            window.location.href = '/login/';
+            // window.location.href = '/login/';
         }
 
 

@@ -3,6 +3,8 @@ import AuthService from "../../services/auth.service";
 import { useNavigate } from 'react-router-dom';
 import { useGlobalState } from "../../context/GlobalState";
 import jwtDecode from "jwt-decode";
+import Layout from "../layout";
+
 
 const Login = () => {
     let navigate = useNavigate();
@@ -28,6 +30,7 @@ const Login = () => {
     }
 
     return (
+        <Layout>
         <div className="c-form">
             <form onSubmit={handleLogin}>
                 <div>
@@ -57,6 +60,7 @@ const Login = () => {
                 />
             </form>
         </div>
+        </Layout>
     )
 
 }

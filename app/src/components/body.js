@@ -22,18 +22,15 @@ export function BigButton(props) {
         props.setPage('carousel')
     }
 
-    useEffect(() => {
-        console.log(props.recommendations)
-        console.log(props.buttonState)
-    },[props.buttonState, props.recommendations])
+
 
     const menuItems = props.outings.map((item) =>
-            <option 
-            value={item.name}
-            key={item.id}
-            >
-                { item.name }
-            </option>
+        <option 
+        value={item.name}
+        key={item.id}
+        >
+            { item.name }
+        </option>
     )
     const onBudgetChange = (event) => {
         props.setPrice(event.target.value)
