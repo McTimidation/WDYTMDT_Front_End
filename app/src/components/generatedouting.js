@@ -8,10 +8,11 @@ import moment from 'moment';
 
 
 
-export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState, setButtonState }) {
+export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState, setButtonState }) {
     const [ scheduledTime, setScheduledTime ] = useState(new Date());
 
     const onScheduleClick = (e) => {
+        console.log(scheduledTime)
         setPage('alert')
         setRecPostData({...recPostData,
                         scheduled_for: moment(scheduledTime).format("YYYY-MM-DDThh:mm")
@@ -30,13 +31,17 @@ export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recP
                         picture_url: selected.picture_url,
                         city: selected.city,
                         state: selected.state,
-                        address: selected.address})
+                        address: selected.address,
+                        url: selected.url
+                        })
+        if (state.currentUser) {
         setPage('schedule')
+        } 
     }
     const outingsList = recommendations.map((item) =>
         <Carousel.Item key={item.id} interval={20000}>
             <h3>{item.name}</h3>
-            <p>{item.phone}<br></br>Rating: {item.rating}</p>
+            <p>{item.phone}<br></br>Rating: {item.rating}<br></br><a href={item.url} target="#">Check out the menu</a></p>
 
             <img
                 className="img-fluid carImages"
@@ -44,14 +49,18 @@ export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recP
                 alt={item.name}
             />
             <Carousel.Caption>
-                <button 
-                    className="btn btn-secondary"
-                    key={item.address}
-                    value={item.id}
-                    onClick={(e) => onOptionClick(e)}
-                    >
-                        Let's Go Here
-                </button>
+                { 
+                    state.currentUser && (
+                    <button 
+                        className="btn btn-secondary"
+                        key={item.address}
+                        value={item.id}
+                        onClick={(e) => onOptionClick(e)}
+                        >
+                            Let's Go Here
+                    </button>
+                    )
+                }
             </Carousel.Caption>
         </Carousel.Item>
     )
@@ -74,8 +83,10 @@ export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recP
             <div id="selectedContainer">
                 <h3>{recPostData.name}</h3>
                 <p>{recPostData.phone}</p>
-                <img id='selectedIMG' src={recPostData.picture_url} alt={recPostData.name}/>
-                <ScheduleOuting />
+                <img className='bizImage' id='selectedIMG' src={recPostData.picture_url} alt={recPostData.name}/>
+                <ScheduleOuting 
+                scheduledTime={scheduledTime}
+                setScheduledTime={setScheduledTime}/>
                 <button onClick={onScheduleClick} id="scheduleButton">
                     Schedule it!
                 </button>
@@ -95,7 +106,7 @@ export function GeneratedOuting({ scrollToRef, page, setPage, PostYelpData, recP
         );
     } else if (page === 'alert') {
         console.log(scheduledTime)
-        const bookedTime = moment(scheduledTime).format("dddd MMM Do  @ h:mma")
+        const bookedTime = moment(scheduledTime).format("dddd MMM Do @ h:mma")
         return (
             <div className="alert alert-dark" role="alert">
                 You scheduled <strong>{recPostData.name}</strong> for <em>{bookedTime}</em>!

@@ -55,7 +55,7 @@ function App() {
             yelpRef.current = [];
             const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}`)
             response.data.businesses.forEach(biz => {
-                console.log(biz)
+                // console.log(biz)
                 yelpRef.current.push({
                     id: biz.id,
                     name: biz.name,
@@ -68,7 +68,8 @@ function App() {
                     coordinates: {
                         lat: biz.coordinates.latitude,
                         long: biz.coordinates.longitude
-                    }
+                    }, 
+                    url: biz.url
                     })
             })
                     // if (Array.isArray(recommendations.businesses)) {
@@ -132,6 +133,7 @@ function App() {
             setPage={setPage}
             />
             <GeneratedOuting
+            state={state}
             scrollToRef={scrollToRef}
             PostYelpData={PostYelpData}
             page={page}

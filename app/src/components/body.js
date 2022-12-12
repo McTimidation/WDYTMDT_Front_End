@@ -41,6 +41,8 @@ export function BigButton(props) {
     if (props.page === 'generate') {
     return (
         <>
+        <div id='bodyContainer'>
+        </div>
             <h5>What's your budget?</h5>
             <div id="priceSelect">
                 <Form.Select onChange={onBudgetChange} aria-label="Default select example">
@@ -63,8 +65,10 @@ export function BigButton(props) {
                         Generate a Date!
                     </Button>
                 </a>
-            </div>
+            
             {props.children}
+        </div>
+        
         </>
     )
     } else {

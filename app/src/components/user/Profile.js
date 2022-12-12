@@ -4,8 +4,8 @@ import request from "../../services/api.request";
 import { ACTIVITY_ENDPOINT } from "../../services/auth.constants";
 import Layout from "../layout";
 import { useState, useEffect, useRef } from "react";
-import Form from 'react-bootstrap/Form';
 import moment from "moment";
+import CancelModal from "./CancelModal";
 
 
 
@@ -14,6 +14,11 @@ const Profile = () => {
     const [profileData, setProfileData ] = useState([]);
     const profileRef = useRef([]);
     const [ deleteID, setDeleteID ] = useState(null)
+    const [ completePatch, setCompletePatch ] = useState(null);
+    const [show, setShow] = useState(false);
+
+    const handleNevermind = () => setShow(false);
+    const handleCancelEvent = () => setShow(true);
 
     
     useEffect(() => {
@@ -32,7 +37,7 @@ const Profile = () => {
                     phone: date.display_phone,
                     rating: date.rating,
                     image: date.picture_url,
-                    scheduled_for: moment(`${date.scheduled_for}`,"YYYY-MM-DDThh:mm").format("dddd MMM Do  @ h:mma"),
+                    scheduled_for: moment(`${date.scheduled_for}`,"YYYY-MM-DDTHH:mm").format("dddd MMM Do  @ h:mma"),
                     completed: date.completed
                     }
         
@@ -42,7 +47,7 @@ const Profile = () => {
         }
         GetActivity();
 
-    },[])
+    },[deleteID, completePatch])
 
     useEffect(() => {
         if (deleteID !== null) {
@@ -58,7 +63,29 @@ const Profile = () => {
 
     const onDelete = (e) => {
         setDeleteID(e.target.value)
+        handleNevermind()
     }
+
+
+
+    useEffect(() => {
+        if (completePatch !== null) {
+            async function CompletePatchRequest() {
+                await request({
+                    url: `${ACTIVITY_ENDPOINT}${completePatch}/`,
+                    method: 'PATCH',
+                })
+            }
+            CompletePatchRequest()
+        }
+    }, [completePatch])
+
+    
+    const onComplete = (e) => {
+        setCompletePatch(e.target.value)
+    }
+
+
 
 
     
@@ -66,17 +93,34 @@ const Profile = () => {
     const dates = profileData.map((date) => 
         <Fragment key={date.id}>
             <h3>{date.name}</h3>
-            <img src={date.image} alt="a restaurant"></img>
+            <img id="userDateImage" src={date.image} alt="a restaurant"></img>
             <div>Scheduled for: {date.scheduled_for}</div>
-            <div>
-                <Form>
-                    <Form.Check 
-                    type={"checkbox"}
-                    label={`Completed?`}
-                    />
-                </Form>
-            </div>
-            <div>{date.completed ? 'Completed: ✔' : ''}</div>
+            { 
+                !date.completed && (
+                    <>
+                        <input
+                            onChange={(e) => onComplete(e)}
+                            type={'checkbox'}
+                            value={date.id}
+                        >
+                        </input>
+                        <div>Check here if you went on the date!</div>
+                    </>
+                )
+            }
+            {
+                date.completed && (
+                    <div>Completed: ✔</div>
+                )
+            }
+            <CancelModal
+            onDelete={onDelete}
+            dateid={date.id}
+            show={show}
+            setShow={setShow}
+            handleCancelEvent={handleCancelEvent}
+            handleNevermind={handleNevermind}
+            />
             <button onClick={(e) => onDelete(e)} value={date.id}>
                 {date.completed ? "Remove" : "Cancel"}
             </button>
