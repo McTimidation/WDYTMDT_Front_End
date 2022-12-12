@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+
+
+body {
+    margin: auto !important;
+    text-align: center;
+    /* height: 100vh; */
+    background: #8e9eab;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #eef2f3, #8e9eab);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+#bodyContainer {
+    margin: auto !important;
+    margin-bottom: 2% !important;
+    height: 300px;
+    background-image: url('https://images.fineartamerica.com/images-medium-large-5/downtown-louisville-kentucky-skyline-night-shot-bill-cobb.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-position-y: 30%;
+    background-size: auto;
+}
+
+#pageTitle {
+    position: fixed;
+    margin: auto !important;
+}
+
+#appTitle {
+    font-size: 4vw !important;
+    font-family: 'Poiret One', cursive;
+    text-align: center !important;
+    margin: auto !important;
+}
+
+.bizImage {
+    min-width: 200px !important;
+    width: 30% !important;
+    height: auto;
+    max-height: 35% !important;
+}
+
+.carImages {
+    max-height: 500px !important;
+    border-radius: 10px;
+    object-fit: scale-down !important;
+}
+
+ul li {
+    list-style: none;
+}
+
+#priceSelect,
+#outingSelect {
+    width: 25% !important;
+    margin-inline: auto;
+}
+
+#selectedContainer {
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 40%;
+}
+
+#selectedIMG {
+    margin-inline: auto;
+    width: 20%;
+    height: auto;
+}
+
+/* Style the button and place it in the middle of the container/image */
+#selectedContainer #scheduleButton {
+
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#selectedContainer #scheduleButton:hover {
+    background-color: black;
+}
+
+#outerCarWrapper {
+    overflow:auto !important; 
+    display:flex !important; 
+    flex-direction:column-reverse !important;
+}
+
+
+.tmdIcon {
+    width: 100px !important;
+    height: auto !important;
+}
+
+#leftPlate {
+    margin-left: auto;
+}
+
+#rightCheers {
+    margin-right: auto;
+    
+}
+
+#userDateImage {
+    max-width: 400px;
+}
+
+@media screen and (max-width: 599px) {
+    #appTitle {
+        font-size: 5vh !important;
+    }
+
+}
+
+@media screen and (max-width: 699px) {
+
+    #priceSelect,
+    #outingSelect {
+        width: 50% !important;
+    }
+}
