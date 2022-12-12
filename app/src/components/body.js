@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { API_URL, USER_RECS_ENDPOINT } from '../services/auth.constants';
-
+import { Geolocator } from './geolocator';
 
 export function BigButton(props) {
     const tempValue = useRef('local');

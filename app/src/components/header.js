@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useGlobalState } from "../context/GlobalState";
 import cheers from '../icons/cheers.png';
 import dish from '../icons/dish.png';
+import authService from "../services/auth.service";
 
 function Header(props) {
     const [ state, dispatch ] = useGlobalState();
@@ -18,6 +19,16 @@ function Header(props) {
         </p>
         </>
     )
+
+    const Logout = () => {
+        localStorage.removeItem("user");
+        // dispatch({
+        //     currentUserToken: resp.access,
+        //     currentUser: data
+        // })
+        
+        props.setPage('generate');
+    }
     
     return(
         <>
@@ -50,7 +61,13 @@ function Header(props) {
                                 </li>
                             )
                         }
-                        
+                        {
+                            state.currentUser && (
+                                <li className="nav-item">
+                                    <Link to="/" onClick={Logout} className="nav-link link-dark">Logout</Link>
+                                </li>
+                            )
+                        }
                     </ul>
                     {
                         props.page === 'generate' ? headlines : null
