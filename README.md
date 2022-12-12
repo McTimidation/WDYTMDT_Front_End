@@ -1,4 +1,4 @@
-# Awesome Inc Web Developer Bootcamp React Template
+# Why Don't You TAKE ME DOWNTOWN
 ```
-npx create-react-app app --template file:.template
+A simple web application to help you figure out where you might want to take a certain someout out to eat
 ```
