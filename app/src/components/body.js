@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { API_URL, USER_RECS_ENDPOINT } from '../services/auth.constants';
-
+import { Geolocator } from './geolocator';
 
 export function BigButton(props) {
     const tempValue = useRef('local');
@@ -41,6 +41,8 @@ export function BigButton(props) {
     if (props.page === 'generate') {
     return (
         <>
+        <div id='bodyContainer'>
+        </div>
             <h5>What's your budget?</h5>
             <div id="priceSelect">
                 <Form.Select onChange={onBudgetChange} aria-label="Default select example">
@@ -63,8 +65,10 @@ export function BigButton(props) {
                         Generate a Date!
                     </Button>
                 </a>
-            </div>
+            
             {props.children}
+        </div>
+        
         </>
     )
     } else {

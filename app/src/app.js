@@ -10,6 +10,7 @@ import request from './services/api.request';
 import { GeneratedOuting } from './components/generatedouting';
 import { ScheduleOuting } from './components/scheduleouting';
 import "react-datetime/css/react-datetime.css";
+import { Location } from './components/geolocator';
 
 
 function App() {
@@ -22,6 +23,13 @@ function App() {
     const yelpRef = useRef([]);
     const [ page, setPage ] = useState('generate')
     const scrollToRef = useRef();
+    const [ lat, setLat ] = useState(null);
+    const [ lng, setLng ] = useState(null);
+    const [ status, setStatus ] = useState(null);
+    // const [ inputOrGeo, setSwitch ] = useState('coordinates');
+    // const [ city, setCity ] = useState('');
+    const [ locationParam, setLocationParam ] = useState('lat=38.0419286&lng=-84.4927681');
+
     const [recPostData, setRecPostData ] = useState({
                                                 user: null,
                                                 name: null,
@@ -34,7 +42,27 @@ function App() {
                                                 scheduled_for:null
                                             })
 
+
+    // function getLocation()  {
+    //         if (!navigator.geolocation) {
+    //             setStatus('Geolocation is not supported by your browser');
+    //         } else {
+    //             setStatus('Locating...');
+    //             navigator.geolocation.getCurrentPosition((position) => {
+    //                 setStatus(null);
+    //                 setLat(position.coords.latitude);
+    //                 setLng(position.coords.longitude);
+    //             }, () => {
+    //                 setStatus('Unable to retrieve your location');
+    //             });
+    //         }
+    //         // setSwitch('coordinates')
+    //     }
+        
     
+
+
+
     useEffect(() => {
         function GetData() {
         const outingArray = []
@@ -49,13 +77,23 @@ function App() {
         GetData();
     },[])
 
+    // if (inputOrGeo === 'coordinates') 
+    // {
+    //     setLocationParam(`lat=${lat}&lng=${lng}`)
+    // } else if (inputOrGeo === 'search') 
+    // {
+    //     setLocationParam(`city=${city}`)
+    // }
+
 
     useEffect(() => {
         async function GetYelpData() {
+
+            console.log(locationParam)
             yelpRef.current = [];
-            const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}`)
+            const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}&${locationParam}`)
             response.data.businesses.forEach(biz => {
-                console.log(biz)
+                // console.log(biz)
                 yelpRef.current.push({
                     id: biz.id,
                     name: biz.name,
@@ -68,20 +106,13 @@ function App() {
                     coordinates: {
                         lat: biz.coordinates.latitude,
                         long: biz.coordinates.longitude
-                    }
+                    }, 
+                    url: biz.url
                     })
             })
-                    // if (Array.isArray(recommendations.businesses)) {
-                    //     console.log(recommendations.businesses["0"]);
-                    //   } else {
-                    //     console.log('arr is not an array');
-                    //   }
+            console.log(locationParam)
         }
         GetYelpData();
-        function random() {
-            return Math.floor(Math.random() * (recommendations.length))
-        }
-        const X = random()
         
 
     },[price, value])
@@ -104,7 +135,7 @@ function App() {
             }
         })
     }
-        
+    
     
 
     
@@ -113,36 +144,52 @@ function App() {
         page={page}
         setPage={setPage}
         >
+            <Location
+                // getLocation={getLocation()}
+                
+                
+                status={status}
+                setStatus={setStatus}
+                setLng={setLng}
+                lng={lng}
+                lat={lat}
+                setLat={setLat}
+                locationParam={locationParam}
+                setLocationParam={setLocationParam}
+                // inputOrGeo={inputOrGeo}
+                // setSwitch={setSwitch}
+            />
             <BigButton
-            scrollToRef={scrollToRef}
-            recPostData={recPostData}
-            setRecPostData={setRecPostData}
-            recommendations={recommendations}
-            setRecommendations={setRecommendations}
-            yelpRef={yelpRef}
-            buttonState={buttonState}
-            setButtonState={setButtonState}
-            price={price}
-            setPrice={setPrice}
-            value={value}
-            setValue={setValue}
-            outings={outings}
-            setOutings={setOutings}
-            page={page} 
-            setPage={setPage}
+                scrollToRef={scrollToRef}
+                recPostData={recPostData}
+                setRecPostData={setRecPostData}
+                recommendations={recommendations}
+                setRecommendations={setRecommendations}
+                yelpRef={yelpRef}
+                buttonState={buttonState}
+                setButtonState={setButtonState}
+                price={price}
+                setPrice={setPrice}
+                value={value}
+                setValue={setValue}
+                outings={outings}
+                setOutings={setOutings}
+                page={page} 
+                setPage={setPage}
             />
             <GeneratedOuting
-            scrollToRef={scrollToRef}
-            PostYelpData={PostYelpData}
-            page={page}
-            setPage={setPage}
-            buttonState={buttonState}
-            setRecPostData={setRecPostData}
-            recPostData={recPostData}
-            yelpRef={yelpRef}
-            setButtonState={setButtonState}
-            recommendations={recommendations}
-            value={value} 
+                state={state}
+                scrollToRef={scrollToRef}
+                PostYelpData={PostYelpData}
+                page={page}
+                setPage={setPage}
+                buttonState={buttonState}
+                setRecPostData={setRecPostData}
+                recPostData={recPostData}
+                yelpRef={yelpRef}
+                setButtonState={setButtonState}
+                recommendations={recommendations}
+                value={value} 
             />
                 
             

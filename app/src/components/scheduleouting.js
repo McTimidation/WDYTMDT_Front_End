@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 // import DateTimePicker from 'react-datetime-picker';
 import Datetime from 'react-datetime';
 import { useState } from "react";
@@ -14,6 +14,9 @@ export function ScheduleOuting( { scheduledTime, setScheduledTime } ) {
     return current.isAfter( yesterday );
     };
 
+    useEffect(() => {
+        console.log(scheduledTime)
+    },[scheduledTime])
 
     
     return (
