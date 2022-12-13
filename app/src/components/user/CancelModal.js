@@ -11,7 +11,7 @@ function CancelModal( { show, setShow, handleCancelEvent, handleNevermind, onDel
                 Delete This Booking
             </Button>
 
-            <Modal show={show} onHide={handleNevermind}>
+            <Modal backdrop='false' show={show} onHide={handleNevermind}>
                 <Modal.Header closeButton>
                     <Modal.Title>Cancel Your Rendezvous</Modal.Title>
                 </Modal.Header>

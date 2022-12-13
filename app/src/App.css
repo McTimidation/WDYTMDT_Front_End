@@ -14,10 +14,11 @@ body {
 
 }
 
-#bodyContainer {
+#heroContainer {
     margin: auto !important;
+    margin-top: 2% !important;
     margin-bottom: 2% !important;
-    height: 300px;
+    height: 275px;
     background-image: url('https://images.fineartamerica.com/images-medium-large-5/downtown-louisville-kentucky-skyline-night-shot-bill-cobb.jpg');
     background-repeat: no-repeat;
     background-position: center;
@@ -28,6 +29,18 @@ body {
 #pageTitle {
     position: fixed;
     margin: auto !important;
+}
+
+#mainHeader, #headerDiv {
+    margin-bottom: 0px !important;
+    padding: 0px !important;
+}
+
+#pageBio {
+    width: 100% !important;
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 1%;
 }
 
 #appTitle {
@@ -54,6 +67,10 @@ ul li {
     list-style: none;
 }
 
+.form-select {
+    min-width: max-content;
+}
+
 #priceSelect,
 #outingSelect {
     width: 25% !important;
@@ -72,6 +89,7 @@ ul li {
     margin-inline: auto;
     width: 20%;
     height: auto;
+    border-radius: 10px;
 }
 
 /* Style the button and place it in the middle of the container/image */
@@ -111,8 +129,42 @@ ul li {
     
 }
 
-#userDateImage {
-    max-width: 400px;
+.userDateImage {
+    max-width: 350px;
+    border-radius: 10px;
+
+}
+
+.modal-backdrop {
+    opacity: 0.1 !important;
+}
+
+#coorButton, #cityInput {
+    margin-inline: auto;
+    width: 25%;
+    border-color: rgb(39, 84, 99);
+    border-radius: 10px;
+    
+}
+
+#generateBtn {
+    width: 30%;
+    font-size: medium;
+    
+}
+
+p {
+    margin: 0px;
+}
+
+#coorButton {
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+#cityInput {
+    margin-bottom: 1.5%;
+    text-align: center;
 }
 
 @media screen and (max-width: 599px) {
