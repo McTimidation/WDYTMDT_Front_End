@@ -15,7 +15,10 @@ function Header(props) {
             <span id="appTitle" className="text-center">Take Me Downtown!</span>
         </a>
         <p id="pageBio">
-            This is an application you can use to help you figure out where the heck you want to go.
+            This is an application you can use to help you figure out where to take a special someone for a meal.<br></br>
+            Just answer a few of the questions below and you'll see some relevant recommendations. <br></br>
+            You can even register a profile and save the recommendations that you like for the time and day you want to go!
+
         </p>
         </>
     )
@@ -32,9 +35,9 @@ function Header(props) {
     
     return(
         <>
-            <div className="justify-content-center container">
+            <div id="headerDiv" className="justify-content-center container">
                 
-                <header className="justify-content-center py-3 mb-4 border-bottom">
+                <header id="mainHeader" className="justify-content-center py-1 mb-4 border-bottom">
                 
                     <ul className="nav d-flex flex-wrap justify-content-center">
                         <li className="nav-item">

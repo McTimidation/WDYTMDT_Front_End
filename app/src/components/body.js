@@ -41,34 +41,40 @@ export function BigButton(props) {
     if (props.page === 'generate') {
     return (
         <>
-        <div id='bodyContainer'>
+        <div id='heroContainer'>
         </div>
-            <h5>What's your budget?</h5>
-            <div id="priceSelect">
-                <Form.Select onChange={onBudgetChange} aria-label="Default select example">
-                    <option value="1%2C2%2C3%2C4">Any</option>
-                    <option value="1">$</option>
-                    <option value="2">$$</option>
-                    <option value="3">$$$</option>
-                    <option value="4">$$$$</option>
-                </Form.Select>
+        {/* <div className="container text-center">
+            <div className="row align-items-start">
+                <div className="col"> */}
+                    <h5>What's your budget?</h5>
+                    <div id="priceSelect">
+                        <Form.Select onChange={onBudgetChange} aria-label="Default select example">
+                            <option value="1%2C2%2C3%2C4">Any</option>
+                            <option value="1">$</option>
+                            <option value="2">$$</option>
+                            <option value="3">$$$</option>
+                            <option value="4">$$$$</option>
+                        </Form.Select>
+                    {/* </div> */}
                 </div>
-            <h5>What kind of outing are you looking for?</h5>
-            <div id="outingSelect">
-                <Form.Select onChange={onOutingChange}>
-                    { menuItems }
-                </Form.Select>
-            </div>
-            <div className="d-grid gap-2">
-                <a href="#imageCarousel">
-                    <Button onClick={generateButtonClick} variant="secondary" size="lg">
-                        Generate a Date!
-                    </Button>
-                </a>
-            
-            {props.children}
-        </div>
-        
+                {/* <div className='col'> */}
+                    <h5>What kind of outing are you looking for?</h5>
+                    <div id="outingSelect">
+                        <Form.Select onChange={onOutingChange}>
+                            { menuItems }
+                        </Form.Select>
+                    </div>
+                {/* </div> */}
+                    {props.children}
+                    <div className="d-grid gap-2">
+                        <a href="#imageCarousel">
+                            <Button id='generateBtn' onClick={generateButtonClick} variant="secondary" size="md">
+                                Generate a Date!
+                            </Button>
+                        </a>
+                    </div>
+            {/* </div> */}
+        {/* </div> */}
         </>
     )
     } else {

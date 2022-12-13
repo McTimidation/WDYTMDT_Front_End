@@ -6,22 +6,28 @@ import Layout from "../layout";
 import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import CancelModal from "./CancelModal";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 
 const Profile = () => {
-    const [state, dispatch] = useGlobalState();
-    const [profileData, setProfileData ] = useState([]);
+    const [state, dispatch ] = useGlobalState();
+    const [ profileData, setProfileData ] = useState([]);
     const profileRef = useRef([]);
     const [ deleteID, setDeleteID ] = useState(null)
     const [ completePatch, setCompletePatch ] = useState(null);
-    const [show, setShow] = useState(false);
-
+    const [ show, setShow ] = useState(false);
+    const [ profileUser, setProfileUser ] = useState();
     const handleNevermind = () => setShow(false);
     const handleCancelEvent = () => setShow(true);
 
-    
+
     useEffect(() => {
+        GetActivity()
+    },[])
+
+
         async function GetActivity() {
             profileRef.current = [];
             let options = {
@@ -37,17 +43,22 @@ const Profile = () => {
                     phone: date.display_phone,
                     rating: date.rating,
                     image: date.picture_url,
-                    scheduled_for: moment(`${date.scheduled_for}`,"YYYY-MM-DDTHH:mm").format("dddd MMM Do  @ h:mma"),
+                    scheduled_for: moment(`${date.scheduled_for}`, "YYYY-MM-DDTHH:mm").format("dddd MMM Do  @ h:mma"),
                     completed: date.completed
-                    }
-        
+                }
+
                 )
             })
-            setProfileData(profileRef.current)
-        }
-        GetActivity();
+            setProfileUser(profileRef.current[0].user)
+            setProfileData(profileRef.current);
 
-    },[deleteID, completePatch])
+        }
+
+        
+
+
+   
+
 
     useEffect(() => {
         if (deleteID !== null) {
@@ -62,8 +73,11 @@ const Profile = () => {
     }, [deleteID])
 
     const onDelete = (e) => {
+        console.log(profileData.length)
         setDeleteID(e.target.value)
-        handleNevermind()
+        setProfileData(profileData.filter(d =>
+            d.id !== e.target.value))
+
     }
 
 
@@ -77,10 +91,11 @@ const Profile = () => {
                 })
             }
             CompletePatchRequest()
+            
         }
     }, [completePatch])
 
-    
+
     const onComplete = (e) => {
         setCompletePatch(e.target.value)
     }
@@ -88,14 +103,14 @@ const Profile = () => {
 
 
 
-    
 
-    const dates = profileData.map((date) => 
+
+    const dates = profileData.map((date) =>
         <Fragment key={date.id}>
             <h3>{date.name}</h3>
-            <img id="userDateImage" src={date.image} alt="a restaurant"></img>
+            <img className="userDateImage" src={date.image} alt="a restaurant"></img>
             <div>Scheduled for: {date.scheduled_for}</div>
-            { 
+            {
                 !date.completed && (
                     <>
                         <input
@@ -113,24 +128,27 @@ const Profile = () => {
                     <div>Completed: ✔</div>
                 )
             }
-            <CancelModal
-            onDelete={onDelete}
-            dateid={date.id}
-            show={show}
-            setShow={setShow}
-            handleCancelEvent={handleCancelEvent}
-            handleNevermind={handleNevermind}
-            />
-            <button onClick={(e) => onDelete(e)} value={date.id}>
-                {date.completed ? "Remove" : "Cancel"}
+            <button
+                type="button" 
+                className="btn btn-outline-dark"
+                onClick={(e) => onDelete(e)} 
+                value={date.id}
+            >
+                Remove This Event
             </button>
+            
         </Fragment>
     )
-    
+
 
     return (
         <Layout>
-            {/* <h1>{profileData[0].user}</h1> */}
+            {
+                profileUser && (
+                    <h1>{profileUser}'s dates</h1>
+                )
+            }
+            
             {dates}
         </Layout>
     )

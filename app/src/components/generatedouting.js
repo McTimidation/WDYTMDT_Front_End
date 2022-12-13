@@ -1,8 +1,9 @@
 
 import Carousel from 'react-bootstrap/Carousel';
 import { ScheduleOuting } from './scheduleouting';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
+import Button from 'react-bootstrap/Button';
 
 
 
@@ -11,11 +12,11 @@ import moment from 'moment';
 export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState, setButtonState }) {
     const [ scheduledTime, setScheduledTime ] = useState(new Date());
 
-    const onScheduleClick = (e) => {
+    const onScheduleClick = () => {
         console.log(scheduledTime)
         setPage('alert')
         setRecPostData({...recPostData,
-                        scheduled_for: moment(scheduledTime).format("YYYY-MM-DDThh:mm")
+                        scheduled_for: moment(scheduledTime._d).format("YYYY-MM-DDThh:mm")
                         });
         PostYelpData()
         setTimeout(() => {setPage('generate')}, 5000)
@@ -38,6 +39,9 @@ export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpDat
         setPage('schedule')
         } 
     }
+
+
+    
     const outingsList = recommendations.map((item) =>
         <Carousel.Item key={item.id} interval={20000}>
             <h3>{item.name}</h3>
@@ -71,7 +75,8 @@ export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpDat
             <Carousel  variant='dark' id="imageCarousel">
                 { outingsList }
             </Carousel>
-            <button ref={scrollToRef} onClick={() => {setPage('generate')}}>Go Back</button>
+            <Button ref={scrollToRef} variant="outline-secondary" onClick={() => 
+                {setPage('generate')}}>Go Back</Button>
             </>
             
         );
@@ -85,28 +90,26 @@ export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpDat
                 <p>{recPostData.phone}</p>
                 <img className='bizImage' id='selectedIMG' src={recPostData.picture_url} alt={recPostData.name}/>
                 <ScheduleOuting 
-                scheduledTime={scheduledTime}
-                setScheduledTime={setScheduledTime}/>
+                    scheduledTime={scheduledTime}
+                    setScheduledTime={setScheduledTime}
+                />
                 <button onClick={onScheduleClick} id="scheduleButton">
                     Schedule it!
                 </button>
-                {/* <iframe
-                    width="450"
-                    height="250"
-                    frameBorder="0" style={{border:0}}
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src={`https://www.google.com/maps/embed/v1/place
-                    ?key=
-                    &q=${recPostData.address}+${recPostData.city}+${recPostData.state}`}
-                    allowFullScreen>
-                </iframe> */}
             </div>
-            <button onClick={() => {setPage('carousel')}}>Go Back</button>
+            <Button variant="outline-secondary" onClick={() => 
+                {setPage('carousel')}}>Go Back</Button>
+            {/* <button 
+                type="button"
+                className="btn btn-outline-secondary"  
+                
+            >
+                Go Back
+            </button> */}
             </>
         );
     } else if (page === 'alert') {
-        console.log(scheduledTime)
-        const bookedTime = moment(scheduledTime).format("dddd MMM Do @ h:mma")
+        const bookedTime = moment(scheduledTime._d).format("dddd MMM Do @ h:mma")
         return (
             <div className="alert alert-dark" role="alert">
                 You scheduled <strong>{recPostData.name}</strong> for <em>{bookedTime}</em>!

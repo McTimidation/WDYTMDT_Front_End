@@ -89,7 +89,6 @@ function App() {
     useEffect(() => {
         async function GetYelpData() {
 
-            console.log(locationParam)
             yelpRef.current = [];
             const response = await axios.get(`${API_URL}yelpView/?price=${price}&term=${value}&${locationParam}`)
             response.data.businesses.forEach(biz => {
@@ -110,12 +109,11 @@ function App() {
                     url: biz.url
                     })
             })
-            console.log(locationParam)
         }
         GetYelpData();
         
 
-    },[price, value])
+    },[price, value, locationParam])
 
     
     async function PostYelpData() {
@@ -144,21 +142,7 @@ function App() {
         page={page}
         setPage={setPage}
         >
-            <Location
-                // getLocation={getLocation()}
-                
-                
-                status={status}
-                setStatus={setStatus}
-                setLng={setLng}
-                lng={lng}
-                lat={lat}
-                setLat={setLat}
-                locationParam={locationParam}
-                setLocationParam={setLocationParam}
-                // inputOrGeo={inputOrGeo}
-                // setSwitch={setSwitch}
-            />
+            
             <BigButton
                 scrollToRef={scrollToRef}
                 recPostData={recPostData}
@@ -176,7 +160,26 @@ function App() {
                 setOutings={setOutings}
                 page={page} 
                 setPage={setPage}
-            />
+                status={status}
+                setStatus={setStatus}
+                setLng={setLng}
+                lng={lng}
+                lat={lat}
+                setLat={setLat}
+                locationParam={locationParam}
+                setLocationParam={setLocationParam}
+                >
+                <Location
+                    status={status}
+                    setStatus={setStatus}
+                    setLng={setLng}
+                    lng={lng}
+                    lat={lat}
+                    setLat={setLat}
+                    locationParam={locationParam}
+                    setLocationParam={setLocationParam}
+                />
+            </BigButton>
             <GeneratedOuting
                 state={state}
                 scrollToRef={scrollToRef}
