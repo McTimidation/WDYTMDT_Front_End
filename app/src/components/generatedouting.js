@@ -9,18 +9,16 @@ import Button from 'react-bootstrap/Button';
 
 
 
-export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpData, recPostData, setRecPostData, value, recommendations, buttonState, setButtonState }) {
-    const [ scheduledTime, setScheduledTime ] = useState(new Date());
+export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpData, recPostData, setRecPostData, scheduledTime, setScheduledTime, value, recommendations, buttonState, setButtonState }) {
 
     const onScheduleClick = () => {
-        console.log(scheduledTime)
+        console.log(scheduledTime._d)
+        console.log(moment(scheduledTime._d).format("YYYY-MM-DDThh:mm"))
         setPage('alert')
-        setRecPostData({...recPostData,
-                        scheduled_for: moment(scheduledTime._d).format("YYYY-MM-DDThh:mm")
-                        });
         PostYelpData()
         setTimeout(() => {setPage('generate')}, 5000)
     }
+    console.log(recPostData.scheduled_for)
 
 
     const onOptionClick = (e) => {

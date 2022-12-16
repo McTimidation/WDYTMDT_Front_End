@@ -9,7 +9,6 @@ export function Location(props) {
         
 
     const onCurrentClick = () => {
-        console.log('click')
         if (!navigator.geolocation) {
             props.setStatus('Geolocation is not supported by your browser');
         } else {
@@ -26,7 +25,6 @@ export function Location(props) {
         
     }
         
-        console.log(props.locationParam)
 
         
         

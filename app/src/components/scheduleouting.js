@@ -15,7 +15,7 @@ export function ScheduleOuting( { scheduledTime, setScheduledTime } ) {
     return current.isAfter( yesterday );
     };
 
-  
+    
 
     
     return (

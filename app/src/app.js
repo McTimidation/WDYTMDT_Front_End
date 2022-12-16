@@ -11,6 +11,7 @@ import { GeneratedOuting } from './components/generatedouting';
 import { ScheduleOuting } from './components/scheduleouting';
 import "react-datetime/css/react-datetime.css";
 import { Location } from './components/geolocator';
+import moment from 'moment';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
     // const [ inputOrGeo, setSwitch ] = useState('coordinates');
     // const [ city, setCity ] = useState('');
     const [ locationParam, setLocationParam ] = useState('lat=38.0419286&lng=-84.4927681');
+    const [ scheduledTime, setScheduledTime ] = useState(new Date());
 
     const [recPostData, setRecPostData ] = useState({
                                                 user: null,
@@ -43,21 +45,6 @@ function App() {
                                             })
 
 
-    // function getLocation()  {
-    //         if (!navigator.geolocation) {
-    //             setStatus('Geolocation is not supported by your browser');
-    //         } else {
-    //             setStatus('Locating...');
-    //             navigator.geolocation.getCurrentPosition((position) => {
-    //                 setStatus(null);
-    //                 setLat(position.coords.latitude);
-    //                 setLng(position.coords.longitude);
-    //             }, () => {
-    //                 setStatus('Unable to retrieve your location');
-    //             });
-    //         }
-    //         // setSwitch('coordinates')
-    //     }
         
     
 
@@ -116,24 +103,24 @@ function App() {
     },[price, value, locationParam])
 
     
-    async function PostYelpData() {
-        await request({
-            url: ACTIVITY_ENDPOINT,
-            method: 'POST',
-            data: {
-                user: state.currentUser.user_id,
-                name: recPostData.name,
-                phone: recPostData.phone.replace(/[^0-9]/g, ''),
-                picture_url: recPostData.picture_url,
-                rating: recPostData.rating,
-                city: recPostData.city,
-                state: recPostData.state,
-                address: recPostData.address,
-                scheduled_for: recPostData.scheduled_for
-            }
-        })
-    }
-    
+        async function PostYelpData() {
+            await request({
+                url: ACTIVITY_ENDPOINT,
+                method: 'POST',
+                data: {
+                    user: state.currentUser.user_id,
+                    name: recPostData.name,
+                    phone: recPostData.phone.replace(/[^0-9]/g, ''),
+                    picture_url: recPostData.picture_url,
+                    rating: recPostData.rating,
+                    city: recPostData.city,
+                    state: recPostData.state,
+                    address: recPostData.address,
+                    scheduled_for: moment(scheduledTime._d).format("YYYY-MM-DDThh:mm")
+                }
+            })
+        }
+
     
 
     
@@ -181,6 +168,8 @@ function App() {
                 />
             </BigButton>
             <GeneratedOuting
+                scheduledTime={scheduledTime}
+                setScheduledTime={setScheduledTime}
                 state={state}
                 scrollToRef={scrollToRef}
                 PostYelpData={PostYelpData}
