@@ -13,7 +13,7 @@ export function GeneratedOuting({ state, scrollToRef, page, setPage, PostYelpDat
 
     const onScheduleClick = () => {
         console.log(scheduledTime._d)
-        console.log(moment(scheduledTime._d).format("YYYY-MM-DDThh:mm"))
+        console.log(moment(scheduledTime._d).format("YYYY-MM-DDTHH:mma"))
         setPage('alert')
         PostYelpData()
         setTimeout(() => {setPage('generate')}, 5000)

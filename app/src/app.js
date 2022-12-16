@@ -116,7 +116,7 @@ function App() {
                     city: recPostData.city,
                     state: recPostData.state,
                     address: recPostData.address,
-                    scheduled_for: moment(scheduledTime._d).format("YYYY-MM-DDThh:mm")
+                    scheduled_for: moment(scheduledTime._d).format("YYYY-MM-DDTHH:mm")
                 }
             })
         }

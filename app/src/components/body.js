@@ -22,6 +22,7 @@ export function BigButton(props) {
 
 
     const menuItems = props.outings.map((item) =>
+  
         <option 
         value={item.name}
         key={item.id}
@@ -43,9 +44,7 @@ export function BigButton(props) {
         <>
         <div id='heroContainer'>
         </div>
-        {/* <div className="container text-center">
-            <div className="row align-items-start">
-                <div className="col"> */}
+
                     <h5>What's your budget?</h5>
                     <div id="priceSelect">
                         <Form.Select onChange={onBudgetChange} aria-label="Default select example">
