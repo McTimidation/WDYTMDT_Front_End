@@ -22,9 +22,9 @@ root.render(
     <Router>
       <Routes>
           <Route path="/" element={<App />} />
-          <Route path="profile" element={<Profile />} />
+          {/* <Route path="profile" element={<Profile />} />
           <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
+          <Route path="register" element={<Register />} /> */}
       </Routes>
     </Router>
   </GlobalProvider>
